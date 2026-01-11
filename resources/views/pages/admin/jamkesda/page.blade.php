@@ -76,6 +76,7 @@
                 </div>
             </div>
         </div>
+        
     </div>
 
     @push('before-styles')
