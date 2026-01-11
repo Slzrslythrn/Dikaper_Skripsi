@@ -76,6 +76,67 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        @if (auth()->user()->level == "admin")
+                        <a href="{{ route('jamkesda.tambah') }}" class="btn btn-primary">Tambah</a>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm mb-0" id="example">
+                                <thead>
+                                    <tr>
+                                        <th class="align-middle">No</th>
+                                        <th class="align-middle" style="min-width: 12.5rem;">Nama Pasien</th>
+                                        <th class="align-middle pr-7">Jenis Kelamin</th>
+                                        <th class="align-middle text-left">Tanggal Lahir</th>
+                                        <th class="align-middle text-left">Tahun Diterima</th>
+                                        <th class="align-middle text-left">Rumah Sakit</th>
+                                        <th class="align-middle text-left">Jenis Rawat</th>
+                                        <th class="align-middle text-left">Status</th>
+                                        @if (auth()->user()->level == "admin")
+                                        <th class="align-middle">Aksi</th>
+                                        @endif
+                                    </tr>
+                                </thead>
+                                <tbody id="orders">
+                                    @php
+                                        $no = 1;
+                                    @endphp
+                                    @foreach ($pasien as $row)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $row->nama_pasien }}</td>
+                                            <td>{{ $row->jenis_kelamin }}</td>
+                                            <td>{{ $row->tanggal_lahir->isoFormat('D MMM Y') }}</td>
+                                            <td>{{ $row->tgl_diterima}}</td>
+                                            <td>{{ $row->rumahsakit ? $row->rumahsakit->nama : '' }}</td>
+                                            <td>{{ $row->jenis_rawat }}</td>
+                                            <td>{{ $row->status }}</td>
+                                            @if (auth()->user()->level == "admin")
+                                            <td>
+                                                <a href="{{ route('jamkesda.lihat', ['id' => $row->pasien_id]) }}"
+                                                    class="btn btn-primary">Lihat</a>
+                                                <form action="{{ route('jamkesda.destroy', ['id' => $row->pasien_id]) }}" method="POST">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-danger mt-2"
+                                                        onclick="return confirm('apakah anda yakin ingin menghapus data?')">Hapus Data</button>
+                                                </form>
+                                            </td>
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     @push('before-styles')
